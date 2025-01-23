@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随机图片展示</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: opacity 1s;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="image-container"></div>
+    <audio id="bg-music" loop style="display: none;" preload="auto">
+        <source src="./奇衡三,DJ阿轩 - 叮咚鸡（宝宝肚肚打雷啦）.mp3" type="audio/mpeg">
+        <source src="./奇衡三,DJ阿轩 - 叮咚鸡（宝宝肚肚打雷啦）.wav" type="audio/wav">
+        <source src="./奇衡三,DJ阿轩 - 叮咚鸡（宝宝肚肚打雷啦）.ogg" type="audio/ogg">
+        您的浏览器不支持音频元素。
+    </audio>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const audio = document.getElementById('bg-music');
+            audio.volume = 1.0; // 强制最大音量
+            audio.controls = false;
+
+            // 点击页面任意位置播放音乐
+            document.addEventListener('click', () => {
+                audio.play().catch(error => {
+                    console.error('音频播放失败:', error);
+                });
+            }, { once: true });
+        });
+    </script>
+
+    <script>
+        const image = '63119c88cc2294fffac71430771365f2_preview.jpg';
+        const container = document.getElementById('image-container');
+
+        function createRandomImage() {
+            const img = document.createElement('div');
+            img.style.position = 'absolute';
+            img.style.backgroundImage = `url('${image}')`;
+            img.style.backgroundSize = 'cover';
+            img.style.backgroundPosition = 'center';
+
+            // 随机大小
+            const size = Math.random() * 500 + 200; // 200-700px
+            img.style.width = `${size}px`;
+            img.style.height = `${size}px`;
+
+            // 随机位置
+            img.style.left = `${Math.random() * 100}%`;
+            img.style.top = `${Math.random() * 100}%`;
+
+            // 保持水平方向
+            img.style.transform = `rotate(0deg)`;
+
+            // 随机透明度
+            img.style.opacity = Math.random() * 0.3 + 0.7; // 0.7-1
+
+            container.appendChild(img);
+
+            // 6秒后移除图片
+            setTimeout(() => {
+                img.remove();
+            }, 6000);
+        }
+
+        // 初始创建图片
+        createRandomImage();
+        // 每0.05秒创建一个新图片
+        setInterval(createRandomImage, 50);
+    </script>
+</body>
+
+</html>
